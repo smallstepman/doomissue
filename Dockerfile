@@ -13,5 +13,6 @@ RUN apt-get update && \
 RUN git clone https://github.com/dbrtly/dagster-workspace /app/dagster-workspace
 WORKDIR /app/dagster-workspace
 
+
 # Set the default command, ensuring the path is correct
 CMD ["./scripts/demo_up.sh"]
