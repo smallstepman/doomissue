@@ -1,0 +1,33 @@
+* DoomEmacs Issue
+** Run
+#+BEGIN_SRC bash
+  docker run ghcr.io/smallstepman/doomissue:latest
+#+END_SRC
+
+** Make Eglot work over SSH tramp
+1. Setup this config
+/root/.local/bin/pyright-langserver points to our remote machine.
+I added tex-mode config because I had been facing delay in response with **Backspace** key.
+
+#+BEGIN_SRC emacs-lisp
+  (after! eglot
+	  (add-to-list 'eglot-server-programs '((python-mode) . ("/root/.local/bin/pyright-langserver" "--stdio")))
+	  )
+
+
+  (after! tex-mode
+	  (map-delete sp-pairs 'LaTeX-mode)
+	  (map-delete sp-pairs 'latex-mode)
+	  (map-delete sp-pairs 'tex-mode)
+	  (map-delete sp-pairs 'plain-tex-mode))
+
+#+END_SRC
+
+2. Setup pyrightconfig.json file in the root of the project directory.
+In our case, /app/dagger-workspace.
+**Note** venvPath doesn't work with _~_
+#+BEGIN_SRC json
+  {"venvPath":"/app/dagster-workspace","venv":".venv"}                                                           
+#+END_SRC
+
+3. Just navigate and open any python files under SSH Tramp and run `M-x eglot`.
